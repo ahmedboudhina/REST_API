@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {Form, Button} from "react-bootstrap"
-import axios from "axios";
+import {addContact} from '../JS/actions/contactActions'
+import {connect} from 'react-redux'
 
 class Add_Contact extends Component {
   state={
@@ -21,7 +22,7 @@ class Add_Contact extends Component {
       email:this.state.email,
       telephone:this.state.telephone
     }
-    axios.post('http://localhost:4000/contact/add_contact',newcontact)
+    this.props.addContact(newcontact)
   }
   render() {
     return (
@@ -52,4 +53,4 @@ class Add_Contact extends Component {
     );
   }
 }
-export default Add_Contact;
+export default connect (null,{addContact})(Add_Contact);

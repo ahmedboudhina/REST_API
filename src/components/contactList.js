@@ -1,28 +1,20 @@
 import React, { Component } from 'react'
 import axios from "axios"
 import {Card, Button} from "react-bootstrap"
-
+import {connect} from 'react-redux'
+import {getContact,deleteContact} from '../JS/actions/contactActions'
  class ContactList extends Component {
-     state={
-         contact:[]
-     }
+     
      componentDidMount(){
-         axios.get("http://localhost:4000/contact").then(response =>{
-         this.setState({
-             contact: response.data
-         })    
-         })
+        this.props.getContact()
      }
      handleDelete=(id)=>{
-         axios.delete(`http://localhost:4000/contact/delete_contact/${id}`)
-         this.setState({
-             contact:this.state.contact.filter(e=>e._id !==id)
-         })
+        this.props.deleteContact(id)
      }
     render() {
         return (
             <div>
-                {this.state.contact.map((contact,i)=>
+                {this.props.contact.map((contact,i)=>
                 <div key ={contact._id}>
                     <Card
       bg="light"
@@ -48,4 +40,11 @@ import {Card, Button} from "react-bootstrap"
         )
     }
 }
-export default ContactList
+
+const mapStateToProps=state=>{
+    return {
+        contact : state.contact.contact
+    }
+}
+
+export default connect(mapStateToProps,{getContact,deleteContact}) (ContactList)
